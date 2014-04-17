@@ -1,6 +1,7 @@
 from collections import defaultdict
 import math
 import os
+import sys
 
 from PIL import Image
 
@@ -102,20 +103,20 @@ def save_filtered_frames():
     except OSError:
         pass
 
-    for i in range(33) + [70, 120]:
+    for i in range(121):
+        print i
         stats = StarData(i).stats()
         for j in range(1, 21):
             save_frame(stats.filtered_frame(j),
                        'filtered/filtered_%s_%s.png' % (i, j))
 
 def compare_frames():
-    stars = range(33) + [70, 120]
-
     out = []
 
-    for i in stars:
+    for i in range(121):
         filtered_frame = StarData(i).stats().filtered_frame(4)
-        for j in stars:
+        for j in range(121):
+            sys.stderr.write('%s %s\n' % (i, j))
             most_similar = 256.0
             for frame in StarData(j).frames():
                 diff = frame_diff(filtered_frame, frame)
